@@ -8,7 +8,6 @@ st.set_page_config(page_title="Smart Library AI Agent", page_icon="📚", layout
 with st.sidebar:
     st.title("⚙️ System Control")
     st.markdown("---")
-    st.markdown("** Developer:** Alex")
     st.markdown("** Internship:** AICTE:IBM SkillsBuild and Edunetfoundation")
     st.markdown("---")
     st.success("🟢 System Online")
