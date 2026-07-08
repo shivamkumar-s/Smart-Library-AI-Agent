@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from openai import OpenAI
+import google.generativeai as genai
 
 #  Page Configuration
 st.set_page_config(page_title="Smart Library AI Agent", page_icon="📚", layout="centered")
@@ -12,7 +12,6 @@ st.markdown("Hello! I am your AI-powered digital librarian. Ask me about books, 
 @st.cache_data
 def load_data():
     try:
-        # Load your CSV file
         df = pd.read_csv("library_database.csv")
         return df
     except FileNotFoundError:
@@ -20,51 +19,43 @@ def load_data():
 
 library_df = load_data()
 
-# Setup OpenAI Client
-# In Streamlit Cloud, you will securely save the API key in the 'Secrets' section
-api_key = st.secrets.get("OPENAI_API_KEY", "")
-client = OpenAI(api_key=api_key)
+api_key = st.secrets.get("GEMINI_API_KEY", "")
+if api_key:
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel('gemini-1.5-flash')
+else:
+    model = None
 
-# Initialize Chat History
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": "How can I help you find study materials today?"}
     ]
 
-
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-
 if prompt := st.chat_input("E.g., Is 'Let us C' available?"):
     
- 
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
         
-    # Generate AI Response
     with st.chat_message("assistant"):
-        if not api_key:
-            st.warning("Please configure your OpenAI API Key to generate responses.")
+        if not model:
+            st.warning("Please configure your GEMINI API Key in Streamlit settings.")
         else:
             with st.spinner("Searching catalog and thinking..."):
                 try:
                     context = library_df.head(10).to_string() if library_df is not None else "No database found."
                     
-                    system_prompt = f"""You are a helpful Smart Library AI Agent for engineering students. 
-                    Use the following library catalog data to answer the student's query: \n\n{context}"""
+                    full_prompt = f"""You are a helpful Smart Library AI Agent for engineering students. 
+                    Use the following library catalog data to answer the student's query: \n\n{context}\n\n
+                    Student's Query: {prompt}"""
                     
-                    response = client.chat.completions.create(
-                        model="gpt-3.5-turbo", 
-                        messages=[
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user", "content": prompt}
-                        ]
-                    )
+                    response = model.generate_content(full_prompt)
+                    ai_reply = response.text
                     
-                    ai_reply = response.choices[0].message.content
                     st.markdown(ai_reply)
                     
                     st.session_state.messages.append({"role": "assistant", "content": ai_reply})
