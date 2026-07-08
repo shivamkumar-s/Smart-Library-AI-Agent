@@ -22,8 +22,11 @@ library_df = load_data()
 api_key = st.secrets.get("GEMINI_API_KEY", "")
 if api_key:
     genai.configure(api_key=api_key)
-model = genai.GenerativeModel('gemini-pro')else:
-    model = None
+model = genai.GenerativeModel('gemini-pro')
+else:
+model = None
+
+
 
 if "messages" not in st.session_state:
     st.session_state.messages = [
