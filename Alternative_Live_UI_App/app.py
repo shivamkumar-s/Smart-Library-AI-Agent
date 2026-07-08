@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import google.generativeai as genai
 
-#  Page Configuration
+# Page Configuration
 st.set_page_config(page_title="Smart Library AI Agent", page_icon="📚", layout="centered")
 
 st.title("📚 Smart Library AI Agent")
@@ -12,6 +12,7 @@ st.markdown("Hello! I am your AI-powered digital librarian. Ask me about books, 
 @st.cache_data
 def load_data():
     try:
+        # Load CSV file
         df = pd.read_csv("library_database.csv")
         return df
     except FileNotFoundError:
@@ -19,12 +20,19 @@ def load_data():
 
 library_df = load_data()
 
+#  Setup Gemini API Client 
 api_key = st.secrets.get("GEMINI_API_KEY", "")
+model = None
+
 if api_key:
     genai.configure(api_key=api_key)
-model = genai.GenerativeModel('gemini-pro')
-
-
+    try:
+        for m in genai.list_models():
+            if 'generateContent' in m.supported_generation_methods:
+                model = genai.GenerativeModel(m.name)
+                break
+    except Exception as e:
+        st.error(f"Failed to fetch Google models: {e}")
 
 if "messages" not in st.session_state:
     st.session_state.messages = [
