@@ -8,17 +8,15 @@ st.set_page_config(page_title="Smart Library AI Agent", page_icon="📚", layout
 with st.sidebar:
     st.title("⚙️ System Control")
     st.markdown("---")
-    st.markdown("**👨‍💻 Developer:** Alex")
-    st.markdown("**🎓 Course:** B.Tech Computer Science (1st Year)")
-    st.markdown("**🏢 Internship:** AICTE & IBM SkillsBuild")
+    st.markdown("** Internship:** AICTE & IBM SkillsBuild")
     st.markdown("---")
-    st.success("🟢 System Online")
-    st.info("💡 Powered by Gemini LLM & RAG")
+    st.success("System Online")
+    st.info("Powered by Gemini LLM & RAG")
 
-st.title("📚 Smart Library AI Agent")
+st.title(" Smart Library AI Agent")
 st.caption("Context-Aware Digital Librarian for Engineering Students")
 
-with st.expander("ℹ️ Project Information & Usage Options"):
+with st.expander(" Project Information & Usage Options"):
     st.write("This AI agent uses a Retrieval-Augmented Generation (RAG) pipeline to fetch real-time book availability, recommend syllabus-aligned resources, and provide academic guidance.")
     st.write("**Try asking things like:**")
     st.write("- *'Is Let us C available in the library?'*")
