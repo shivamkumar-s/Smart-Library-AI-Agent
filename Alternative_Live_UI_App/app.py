@@ -8,15 +8,16 @@ st.set_page_config(page_title="Smart Library AI Agent", page_icon="📚", layout
 with st.sidebar:
     st.title("⚙️ System Control")
     st.markdown("---")
-    st.markdown("** Internship:** AICTE & IBM SkillsBuild")
+    st.markdown("** Developer:** Alex")
+    st.markdown("** Internship:** AICTE:IBM SkillsBuild and Edunetfoundation")
     st.markdown("---")
-    st.success("System Online")
-    st.info("Powered by Gemini LLM & RAG")
+    st.success("🟢 System Online")
+    st.info(" Powered by Gemini LLM & RAG")
 
-st.title(" Smart Library AI Agent")
+st.title("📚 Smart Library AI Agent")
 st.caption("Context-Aware Digital Librarian for Engineering Students")
 
-with st.expander(" Project Information & Usage Options"):
+with st.expander("ℹ️ Project Information & Usage Options"):
     st.write("This AI agent uses a Retrieval-Augmented Generation (RAG) pipeline to fetch real-time book availability, recommend syllabus-aligned resources, and provide academic guidance.")
     st.write("**Try asking things like:**")
     st.write("- *'Is Let us C available in the library?'*")
@@ -25,9 +26,9 @@ with st.expander(" Project Information & Usage Options"):
 @st.cache_data
 def load_data():
     paths = [
-        "library_database.csv", 
-        "Alternative_Live_UI_App/library_database.csv",
-        "../library_database.csv"
+        "Library_database - Sheet1.csv", 
+        "Alternative_Live_UI_App/Library_database - Sheet1.csv",
+        "../Library_database - Sheet1.csv"
     ]
     for path in paths:
         if os.path.exists(path):
@@ -84,5 +85,4 @@ if prompt := st.chat_input("Enter your query here..."):
                     st.session_state.messages.append({"role": "assistant", "content": ai_reply})
                     
                 except Exception as e:
-                    st.error(f"Catalog Error: {e}")               
-                    st.error(f"An error occurred: {e}")
+                    st.error(f"Catalog Error: {e}")
