@@ -84,5 +84,5 @@ if prompt := st.chat_input("Enter your query here..."):
                     st.session_state.messages.append({"role": "assistant", "content": ai_reply})
                     
                 except Exception as e:
-                    st.error(f"Catalog Error: {e}")                except Exception as e:
+                    st.error(f"Catalog Error: {e}")               
                     st.error(f"An error occurred: {e}")
